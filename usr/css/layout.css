@@ -1,0 +1,47 @@
+*{
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: 'Open Sans', 'Century Gothic', 'Questrial', 'Roboto', 'Segoe UI', Arial, sans-serif;
+    font-weight: 400;
+}
+
+code {
+    font-family: 'Consolas';
+    font-size: 11pt;
+    line-height: 11pt;
+}
+
+.wrapper {
+    display: grid;
+    grid-template-columns: minmax(200px, 1fr) auto;
+    grid-template-rows: 50px auto 50px;
+}
+
+.panel .dir_explorer {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.panel.tabs {
+    grid-column: 2;
+    grid-row: 2;
+
+    background: #eee;
+}
+
+.panel.tabs .tab .tab_header {
+    background: darkorange;
+}
+
+.panel.tabs .tab button, .panel .tabs .tab .tab_header {
+    position: relative;
+    display: block;
+    float: left;
+}
+
+.panel.tabs .tab {
+    max-width: 250px;
+}
