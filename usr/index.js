@@ -1,21 +1,24 @@
-let path = '/Users/Jacob Schneider/Code';
+import {
+	toMDView,
+	toCodeView
+} from '/src/views.js';
+import escapeHtml from '/src/util.js';
+import TabManager from '/src/tabs/tabmanager.js';
+import FileManager from '/src/files/filemanager.js'
+
+const path = require('path');
+const fs = require('fs')
 
 addEventListener('load', async e => {
-	document.querySelector('.markdown-rendered').innerHTML = await getTest();
 
-	(await (await fetch(`/getdir?path=${encodeURI(path)}`, {
-		method: 'POST'
-	})).json()).forEach(i => {
-		document.querySelector('.dir_view').innerHTML += `<li>${i}</li>`
-	})
+	await TabManager.openTab("New Tab", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/full_test.md', 1, true)
+	await TabManager.openTab("New Tab 2", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/test.md', 1, true)
+	await TabManager.openTab("New Tab 3", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/full_test.js', 0, false)
+
+	Prism.highlightAll();
+
+	FileManager.show();
 })
 
-async function getTest() {
-	let r = await fetch('/test/full_test.md')
-	r = await r.text();
-
-	return await (await fetch('/compile', {
-		method: 'POST',
-		body: r
-	})).text()
-}
+Mousetrap.bind('ctrl+r', e => window.location.reload());
+Mousetrap.bind('f5', e => window.location.reload());

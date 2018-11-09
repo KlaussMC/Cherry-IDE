@@ -1,11 +1,14 @@
-*{
+* {
     margin: 0;
     padding: 0;
-
     box-sizing: border-box;
-
     font-family: 'Open Sans', 'Century Gothic', 'Questrial', 'Roboto', 'Segoe UI', Arial, sans-serif;
     font-weight: 400;
+    outline: none;
+}
+
+body {
+    overflow: hidden;
 }
 
 code {
@@ -16,32 +19,98 @@ code {
 
 .wrapper {
     display: grid;
-    grid-template-columns: minmax(200px, 1fr) auto;
-    grid-template-rows: 50px auto 50px;
+    grid-template-columns: minmax(200px, 1fr) 5fr;
+    grid-template-rows: 50px calc(100vh - 100px) 50px;
+
+    grid-template-areas: 'toolbar toolbar' 'filetree viewer' 'statusbar statusbar';
 }
 
-.panel .dir_explorer {
-    grid-column: 1;
-    grid-row: 2;
+.panel.dir_explorer {
+    grid-area: filetree;
 }
 
 .panel.tabs {
-    grid-column: 2;
-    grid-row: 2;
-
-    background: #eee;
+    grid-area: viewer;
+    display: grid;
+    grid-template-rows: 30px auto;
 }
 
-.panel.tabs .tab .tab_header {
-    background: darkorange;
-}
-
-.panel.tabs .tab button, .panel .tabs .tab .tab_header {
+.panel.tabs .tab button, .panel.tabs .tab .tab_header {
     position: relative;
     display: block;
     float: left;
 }
 
-.panel.tabs .tab {
-    max-width: 250px;
+.tab-bar {
+    grid-row: 1;
+    width: 100%;
+    line-height: 30px;
+}
+
+.view_container {
+    overflow: auto;
+}
+
+.view, .view_container {
+    position: relative;
+    grid-row: 2;
+    width: 100%;
+    padding: 10px;
+}
+
+.view_container * ul li {
+    margin-left: 30px;
+}
+
+.view_container > * {
+    height: 100%;
+    width: 100%;
+    /* overflow: auto; */
+}
+
+.tool-bar {
+    grid-area: toolbar;
+}
+
+.status-bar {
+    grid-area: statusbar;
+}
+
+.view:not(.active) {
+    display: none;
+}
+
+.code.view.active {
+    display: grid;
+    grid-template-columns: 50px auto;
+    /* overflow: hidden; */
+}
+.gutter {
+    grid-column: 1;
+    font-size: 11pt;
+}
+.editor_direct {
+    /* font-size: 11pt; */
+    font-family: "consolas";
+    display: block;
+    /* position: relative; */
+    width: 100%;
+    height: 100%;
+    /* overflow: auto; */
+    resize: none;
+    grid-column: 2;
+}
+
+.editor_direct * {
+    /* overflow: auto; */
+    font-family: inherit;
+}
+
+pre {
+    all: initial !important;
+}
+
+span.line-numbers-rows::before {
+    /* color: deeppink; */
+    content: 'hi'
 }

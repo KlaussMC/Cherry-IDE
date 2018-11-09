@@ -20,6 +20,7 @@ server.listen(port, err => {
 			width: 720,
 			height: 360,
 			title: 'Snapback IDE'
+			// frame: false
 		});
 		win.setMenu(null);
 

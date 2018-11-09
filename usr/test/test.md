@@ -1,1 +1,1 @@
-* __ Hello World __ *
+> Hello World

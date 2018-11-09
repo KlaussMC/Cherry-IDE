@@ -5,34 +5,42 @@
     <meta charset="utf-8">
     <title>Snapback IDE</title>
 
-    <link rel="stylesheet" href="/css/layout.css" </head> <body>
-    <section class="wrapper">
-        <section class="panel">
-            <div class="dir_explorer">
-                <ul class="dir_view">
+    <link rel="stylesheet" href="/css/layout.css" />
+    <link rel="stylesheet" href="/css/master.css" />
+    <link rel="stylesheet" href="/css/prism.css" />
 
-                </ul>
-            </div>
+    <script>
+        let dir = '/Users/Jacob Schneider/Code'; // define the current directory path
+    </script>
+</head>
+
+<body>
+    <section class="wrapper">
+        <section class="tool-bar">
+
+        </section>
+        <section class="panel dir_explorer">
+            <ul class="dir_view">
+
+            </ul>
         </section>
         <section class="panel tabs">
-            <div class="tab">
-                <div class="tab_header">
-                    <h3>New Tab</h3>
-                </div>
-                <button class="tab_close_btn">
-                    <img src="/res/close.svg" />
-                </button>
-            </div>
-            <br />
-            <div class="markdown-rendered">
+            <div class="tab-bar">
 
             </div>
+            <div class="view_container">
+
+            </div>
+        </section>
+        <section class="status-bar">
+
         </section>
     </section>
 
     <script src="/lib/mousetrap.js"></script>
-    <script src="/index.js" charset="utf-8"></script>
+    <script src="/lib/prism.js"></script>
+    <script src="/index.js" type="module" charset="utf-8"></script>
 
-    </body>
+</body>
 
 </html>

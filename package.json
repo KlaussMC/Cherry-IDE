@@ -18,6 +18,7 @@
     },
     "homepage": "https://github.com/KlaussMC/Markdown-IDE#readme",
     "dependencies": {
+        "electron": "^3.0.8",
         "electron-titlebar": "*"
     }
 }
