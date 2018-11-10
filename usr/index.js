@@ -6,6 +6,12 @@ import escapeHtml from '/src/util.js';
 import TabManager from '/src/tabs/tabmanager.js';
 import FileManager from '/src/files/filemanager.js'
 
+const {
+	ipcRenderer
+} = require('electron');
+
+let fullscreen = false;
+
 const path = require('path');
 const fs = require('fs')
 
@@ -18,7 +24,20 @@ addEventListener('load', async e => {
 	Prism.highlightAll();
 
 	FileManager.show();
+
+	document.addEventListener('contextmenu', e => {
+		if (menu)
+			menu.show(e.clientX, e.clientY);
+		e.preventDefault();
+	})
+
+	document.addEventListener('click', e => {
+		if (menu)
+			menu.unrender();
+	})
 })
 
 Mousetrap.bind('ctrl+r', e => window.location.reload());
+Mousetrap.bind('ctrl+shift+r', e => window.location.reload());
 Mousetrap.bind('f5', e => window.location.reload());
+Mousetrap.bind('f11', e => ipcRenderer.send('fullscreen', fullscreen = !fullscreen))

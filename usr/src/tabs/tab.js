@@ -13,7 +13,7 @@ export default class Tab {
 		this.content = "";
 
 		this.close = () => {
-			if (document.querySelector(`#view_${this.id}.active`)) // if element with current ID and active class does not exist // if current tab is not focued
+			if (document.querySelector(`#view_${this.id}.active`))
 				TabManager.prevTab(this.id);
 			document.querySelector(`#${this.id}`).outerHTML = "";
 			TabManager.closeTab(this.id);
@@ -27,21 +27,16 @@ export default class Tab {
 		} else {
 			this.content = properties.content;
 		}
+
+		if (properties.focus) TabManager.switchTab(this.id);
 	}
 
 	show() {
 
-		// let tabHTML =
-
-		document.querySelector('.tab-bar').appendHTML(`<div class="tab" id="${this.id}"><h3 class="tab_header">${this.name}</h3><button class="tab_close_btn"></button></div>`)
+		document.querySelector('.tab-bar').appendHTML(`<div class="tab active" id="${this.id}"><h3 class="tab_header">${this.name}</h3><button class="tab_close_btn"></button></div>`)
 		document.querySelector(`#${this.id} button`).addEventListener("click", this.close);
 
-		// console.log(`Setting Event Listener for ${this.id} tab`)
-		document.querySelector(`#${this.id} .tab_header`).addEventListener("click", e => TabManager.switchTab(this.id))
-
-
-		// .addEventListener("click", e => TabManager.switchTab(this.id))
-		// console.log(`Event Listener set for ${this.id} tab`)
+		document.querySelector(`.tab#${this.id}`).addEventListener("click", e => TabManager.switchTab(this.id))
 	}
 
 	async getContent(compileText) {

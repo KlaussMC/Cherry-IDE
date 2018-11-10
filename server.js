@@ -55,7 +55,9 @@ const server = http.createServer((req, res) => {
 						res.writeHead(200, {
 							'Content-type': 'application/json'
 						});
-						res.write(JSON.stringify(fs.readdirSync(decodeURI(parsed.params.path))))
+
+						res.write(JSON.stringify(convertToJSON(decodeURI(req.body), 0)))
+
 				}
 				res.end();
 			} catch (e) {
@@ -102,6 +104,24 @@ let getContentType = function(file) {
 		default:
 			return 'text/plain';
 	}
+}
+
+let convertToJSON = (input, depth) => {
+	let output = {}
+	if (depth < 10) {
+		try {
+			fs.readdirSync(input).forEach(item => {
+				if (item != "node_modules" && item != ".git")
+					output[item] = fs.lstatSync(path.join(input, item)).isDirectory() ? convertToJSON(path.join(input, item), depth + 1) : "file";
+			})
+		} catch (e) {
+			return "Error";
+		}
+	} else {
+		return "Too Deep";
+	}
+
+	return output;
 }
 
 module.exports = server;

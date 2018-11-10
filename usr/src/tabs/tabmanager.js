@@ -25,20 +25,23 @@ export default class TabManager {
 			path: loc
 		})
 
-		if (view == 0)
+		if (view == 0) {
 			document.querySelector('.view_container').innerHTML += toCodeView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
-		else
+			Prism.highlightAll();
+		} else
 			document.querySelector('.view_container').innerHTML += toMDView(tab.id, await tab.getContent(compile), focusesTab);
 
 	}
 
 	static switchTab(id) {
-		let attr = document.querySelector('#view_' + this.getActiveTab().id).getAttribute('class').split(' ')
-		attr.splice(attr.indexOf('active'), 1);
-		document.querySelector('#view_' + this.getActiveTab().id).setAttribute('class', attr.join(' '))
-		activeTab = id;
-		let el = document.querySelector(`#view_${id}`);
-		el.setAttribute('class', el.getAttribute('class') + " active");
+		if (idExists(id)) {
+			document.querySelector('.view.active').classList.remove('active');
+			document.querySelector(`#view_${id}`).classList.add('active');
+
+			document.querySelector('.tab.active').classList.remove('active');
+			document.querySelector(`.tab#${id}`).classList.add('active');
+		}
+
 	}
 
 	static newTab(name, activateTab) {
@@ -48,6 +51,12 @@ export default class TabManager {
 		if (activateTab) {
 			activeTab = id;
 			this.getActiveTab().show();
+			// this.switchTab(id);
+
+			try {
+				document.querySelector('.tab.active').classList.remove('active');
+			} catch (e) {}
+			document.querySelector(`.tab#${activeTab}`).classList.add('active');
 		}
 
 		return tabs[tabs.length - 1];
@@ -83,6 +92,7 @@ export default class TabManager {
 		for (let i in tabs) {
 			i = Number(i);
 			if (tabs[i].id == id) {
+				console.log('swithing')
 				this.switchTab(tabs[(i + 1) % tabs.length].id);
 			}
 		}

@@ -16,6 +16,7 @@ export function toCodeView(id, code, activateView) {
 		// display welcome screen
 		showWelcomeScreen();
 	}
+
 }
 export function showWelcomeScreen() {
 	document.querySelector('.view_container').innerHTML = `<div class="welcome view active"><h1>Welcome to MD IDE</h1>. Open a file to being</div>`

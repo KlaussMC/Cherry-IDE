@@ -83,6 +83,7 @@ code {
 .code.view.active {
     display: grid;
     grid-template-columns: 50px auto;
+    user-select: text;
     /* overflow: hidden; */
 }
 .gutter {
