@@ -32,24 +32,28 @@ export default class FileManager {
 		addEventListeners();
 
 	}
+
+	static async openAsCode() {
+
+	}
 }
 
-function openFile(file) {
-	if (["html", "md", "css", "js", "mjs", "jade", "pug", "ejs", "hbs", "scss", "sass", "less", "htm"].indexOf(file.split(/[\/\\]/).pop().split('.').pop()) > -1)
-		TabManager.openTab(file.split(/[\/\\]/).pop(), true, path.join(dir, file), ["html", "htm", "md"].indexOf(file.split(/[\/\\]/).pop().split('.').pop()) > -1 ? 1 : 0, file.split(/[\/\\]/).pop().split('.').pop() == "md");
-	else {
-		TabManager.newTab("Error", true)
-		TabManager.getActiveTab().loadContent({
-			fromFile: false,
-			type: 'txt',
-			path: '/',
-			content: "There was an error during the parsing of this file, it is either of an unsupported format, has an incorrect file extension or is not supported in general. If you wish for this type of file to be recognised, feel free to leave an issue on GitHub, or write a plugin (coming) for this file Type",
-			focus: true
-		})
+async function openFile(file, view) {
+
+	if (["html", "md", "css", "js", "mjs", "jade", "pug", "ejs", "hbs", "scss", "sass", "less", "htm"].indexOf(file.split(/[\/\\]/).pop().split('.').pop()) > -1) {
+		await TabManager.openTab(file.split(/[\/\\]/).pop(), true, path.join(dir, file), view == -1 ? (["html", "htm", "md"].indexOf(file.split(/[\/\\]/).pop().split('.').pop()) > -1 ? 1 : 0) : view, file.split(/[\/\\]/).pop().split('.').pop() == "md");
+	} else {
+		await TabManager.openTab(file.split(/[\/\\]/).pop(), true, path.join(dir, file), 2, file.split(/[\/\\]/).pop().split('.').pop() == "md")
 	}
+	await TabManager.switchTab(TabManager.getActiveTab().id);
 }
 
 function addEventListeners() {
 	[...document.querySelectorAll('.label')].forEach(i => i.addEventListener('click', e => i.classList.toggle('hidden')));
-	[...document.querySelectorAll('li.file')].forEach(i => i.addEventListener('dblclick', e => openFile(path.join(decodeURI(i.children[0].getAttribute('value')), i.children[0].innerHTML))))
+	[...document.querySelectorAll('li.file')].forEach(i => i.addEventListener('click', e => {
+		if (window.event.ctrlKey)
+			openFile(path.join(decodeURI(i.children[0].getAttribute('value')), i.children[0].innerHTML), -1) // Pick appropriate view
+		else
+			openFile(path.join(decodeURI(i.children[0].getAttribute('value')), i.children[0].innerHTML), 0) // Open in code view
+	}))
 }

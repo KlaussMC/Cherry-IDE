@@ -1,10 +1,17 @@
-import {
-	toMDView,
-	toCodeView
-} from '/src/views.js';
 import escapeHtml from '/src/util.js';
 import TabManager from '/src/tabs/tabmanager.js';
-import FileManager from '/src/files/filemanager.js'
+import FileManager from '/src/files/filemanager.js';
+import MenuManager from '/src/menu/menumanager.js';
+import ContextHandler from '/src/context_handler.js';
+import MenuOption from '/src/menu/menu_option.js';
+import KeyBinding from '/src/keybinding.js';
+import SaveManager from '/src/files/Save_Manager.js';
+import applyToolBarFunctions from '/src/toolbar.js';
+import {
+	toMDView,
+	toCodeView,
+	showWelcomeScreen
+} from '/src/views.js';
 
 const {
 	ipcRenderer
@@ -12,32 +19,101 @@ const {
 
 let fullscreen = false;
 
+MenuManager.renderMenu({
+	File: {
+		New: new MenuOption(e => console.log("New File"), "ctrl+n"),
+		Open: new MenuOption(e => console.log("Open File"), "ctrl+o"),
+		Save: new MenuOption(e => SaveManager.saveFile(), "ctrl+s")
+	},
+	Edit: {
+		Undo: new MenuOption(e => console.log("Undo")),
+		Redo: new MenuOption(e => console.log("Redo"))
+	},
+	View: {
+		Theme: {
+			Light: new MenuOption(e => console.log("Light Theme")),
+			Dark: new MenuOption(e => console.log("Dark Theme"))
+		},
+		"Colour Scheme": {
+			Purple: new MenuOption(e => console.log("Purple"))
+		}
+	},
+	Help: {
+		About: new MenuOption(e => Alert(`The Cherry IDE was designed based on a cross between the Atom Text Editor and Microsoft Office Word. It uses the following libaries to bring you the experience: <br/><br/> <ul> <li> Electron </li> <li> Markdown-It </li> <li> Prism.JS </li> <li> UI.JS </li> <li> Mousetrap.JS </li>`, "Credits"))
+	}
+})
+
 const path = require('path');
 const fs = require('fs')
 
 addEventListener('load', async e => {
-
-	await TabManager.openTab("New Tab", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/full_test.md', 1, true)
-	await TabManager.openTab("New Tab 2", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/test.md', 1, true)
-	await TabManager.openTab("New Tab 3", true, 'C:/Users/Jacob Schneider/Code/GIT/Mardown-IDE/usr/test/full_test.js', 0, false)
+	showWelcomeScreen();
 
 	Prism.highlightAll();
 
 	FileManager.show();
 
-	document.addEventListener('contextmenu', e => {
-		if (menu)
-			menu.show(e.clientX, e.clientY);
+	window.openContext = function(view) {
+		switch (view) {
+			case 0:
+				ContextHandler.code(contextFocus);
+				break;
+			case 1:
+				ContextHandler.preview(contextFocus);
+				break;
+			case 2:
+				ContextHandler.text(contextFocus);
+		}
+	}
+
+	document.addEventListener('contextmenu', function(e) {
+		focused = e.path[0].querySelector('.file_view');
 		e.preventDefault();
+		if (focused) {
+			contextFocus = require('path').join(focused.getAttribute('value'), focused.innerHTML);
+			if (menu)
+				menu.show(e.clientX, e.clientY);
+			else {
+				menu = new UIbox(new template({
+					content: {
+						"View Code": e => openContext(0),
+						"View Preview": e => openContext(1),
+						"View Text": e => openContext(2)
+					},
+					type: 'menu',
+					settings: {
+						contentIsArray: true
+					}
+				}), "Context Menu", () => {}, () => {}, () => {})
+
+				menu.show(e.clientX, e.clientX);
+			}
+		}
 	})
 
-	document.addEventListener('click', e => {
-		if (menu)
+	addEventListener('click', e => {
+		if (menu) // this is the UIBox Menu
 			menu.unrender();
 	})
+
+	applyToolBarFunctions([{
+		file: "editor_view.svg",
+		callback: e => console.log("Convert To Editor View")
+	}, {
+		file: "settings.svg",
+		callback: e => console.log("Opening Settings")
+	}])
+
+	// console.log(await Prompt("What's your name?", "Information required", "Name"));
 })
 
-Mousetrap.bind('ctrl+r', e => window.location.reload());
-Mousetrap.bind('ctrl+shift+r', e => window.location.reload());
-Mousetrap.bind('f5', e => window.location.reload());
-Mousetrap.bind('f11', e => ipcRenderer.send('fullscreen', fullscreen = !fullscreen))
+new KeyBinding("ctrl+r", e => window.location.reload());
+new KeyBinding("ctrl+shift+r", e => window.location.reload());
+new KeyBinding("f5", e => window.location.reload());
+new KeyBinding("f11", e => ipcRenderer.send('fullscreen', fullscreen = !fullscreen));
+new KeyBinding('ctrl+w', e => {
+	try {
+		TabManager.getActiveTab().close(true)
+	} catch (e) {}
+});
+new KeyBinding("alt", e => document.querySelector('.menu_bar').classList.toggle('hidden'))

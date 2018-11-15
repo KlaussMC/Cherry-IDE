@@ -86,6 +86,20 @@ code {
     user-select: text;
     /* overflow: hidden; */
 }
+.text.view * {
+    font-family: 'Consolas', monospace;
+    color: #540878;
+}
+.text.view textarea {
+    width: 100%;
+    height: 100%;
+    display: block;
+    position: absolute;
+    border: none;
+    resize: none;
+    word-wrap:normal;
+}
+
 .gutter {
     grid-column: 1;
     font-size: 11pt;
@@ -111,7 +125,9 @@ pre {
     all: initial !important;
 }
 
-span.line-numbers-rows::before {
-    /* color: deeppink; */
-    content: 'hi'
+iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
 }

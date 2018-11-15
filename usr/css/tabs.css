@@ -55,3 +55,7 @@
     position: absolute;
     top: calc(7.5pt - 6.5px);
 }
+
+.tab button.unsaved {
+    background: #9e018f !important;
+}

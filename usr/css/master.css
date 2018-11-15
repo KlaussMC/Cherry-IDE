@@ -13,12 +13,11 @@
 *::-webkit-scrollbar {
     width: 7px;
     height: 7px;
-	background-color: transparent;
-
+    background-color: transparent;
 }
 
 *::-webkit-scrollbar-thumb {
-	background-color: #999;
+    background-color: #999;
 }
 
 @font-face {
@@ -28,16 +27,18 @@
 
 .uibox.menu.wrapper {
     display: block;
-    position:absolute;
+    position: absolute;
     width: auto;
     padding: 0 !important;
-    padding-top: 10px !important;
-    padding-bottom: 10px !important;
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
     border-radius: 10px !important;
     font-size: 11pt !important;
     min-width: 200px !important;
     background: #f6f6f6 !important;
+    box-shadow: 0 0 3px 0 #aaa;
 }
+
 .uibox.menu.option {
     font-weight: normal !important;
     width: 100%;
@@ -63,6 +64,101 @@
 }
 
 .uibox.menu hr {
-    margin-top:3px;
-    margin-bottom:3px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+}
+
+.FA {
+    font-family: FontAwesome;
+}
+
+.uibox.display_area {
+    position: fixed;
+    top: 0;
+}
+
+.uibox.box.wrapper {
+    display: block !important;
+    background: #eee;
+    padding: 5px;
+    border-radius: 10px;
+    width: 450px;
+    padding-top: 25px;
+    border-top: 4px solid #9005af;
+    position: fixed;
+    left: 50%;
+    box-shadow: 0 0 7px 0 #aaa;
+    transform: translate(-50%);
+
+    animation: 0.4s slideIn ease;
+}
+
+.uibox.box.wrapper .buttons button {
+    min-width: 120px;
+    border: none;
+    background: #9005af;
+    color: #ddd;
+    font-weight: normal;
+    padding: 5px;
+    font-family: Helvetica;
+    border-radius: 4px;
+    border: 2px solid #9005af;
+    margin: 3px;
+    /* position: relative;
+    left: calc(100% - 450px); */
+}
+.uibox.box.wrapper .buttons {
+    width: 100%;
+    display: block;
+    text-align: right;
+}
+
+.uibox.box.wrapper .header {
+    width:  100%;
+    padding-left: 10px;
+    font-size: 15pt;
+}
+
+.uibox.box.wrapper .content {
+    padding: 20px;
+}
+
+@keyframes slideIn {
+    0% {
+        top: -100%;
+    }
+    100% {
+        top: 0;
+    }
+}
+
+input {
+    background: transparent;
+    border: 1px solid #9005af;
+    padding: 5px;
+    border-radius: 5px;
+    display: block;
+    width: 100%;
+    margin-top: 5px;
+}
+
+pre.editor_direct {
+    margin-left: 40px !important;
+}
+pre.editor_direct *:before {
+    padding-right: 5px;
+    font-family: 'Courier New';
+}
+
+pre code {
+    width: 100%;
+    height: 100% !important;
+}
+.view {
+    cursor: text !important;
+    overflow:auto;
+}
+
+button {
+    cursor: pointer;
 }

@@ -1,8 +1,10 @@
-let win;
+let win, loaderWin;
 
 const server = require('./server');
 
 const port = 1024;
+
+const path = require('path');
 
 server.listen(port, err => {
 
@@ -19,7 +21,8 @@ server.listen(port, err => {
 		win = new BrowserWindow({
 			width: 720,
 			height: 360,
-			title: 'Snapback IDE'
+			title: 'Cherry IDE',
+			icon: path.join(__dirname, 'usr/res/icon.png')
 			// frame: false
 		});
 		win.setMenu(null);
@@ -35,6 +38,8 @@ server.listen(port, err => {
 
 		win.webContents.send('resize', win.isMaximized());
 		win.webContents.openDevTools();
+
+		win.maximize();
 	});
 
 	app.on('window-all-closed', () => {

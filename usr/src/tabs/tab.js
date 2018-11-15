@@ -12,8 +12,8 @@ export default class Tab {
 		this.id = id;
 		this.content = "";
 
-		this.close = () => {
-			if (document.querySelector(`#view_${this.id}.active`))
+		this.close = (forceClose) => {
+			if (document.querySelector(`#view_${this.id}.active`) || forceClose)
 				TabManager.prevTab(this.id);
 			document.querySelector(`#${this.id}`).outerHTML = "";
 			TabManager.closeTab(this.id);
@@ -23,7 +23,7 @@ export default class Tab {
 	loadContent(properties) {
 		this.type = properties.type || properties.path.split(/\/|\\/).pop().split('.').pop();
 		if (properties.fromFile) {
-			this.content = fs.readFileSync(properties.path).toString();
+			this.content = fs.readFileSync(decodeURI(properties.path)).toString();
 		} else {
 			this.content = properties.content;
 		}
@@ -45,5 +45,16 @@ export default class Tab {
 			method: 'POST',
 			body: c
 		})).text()) : this.content;
+	}
+
+	setSaveManager(manager) {
+		this.SaveManager = manager;
+
+		let sm = this.SaveManager
+		document.querySelector(`#view_${this.id} code`).addEventListener('keydown', function(e) {
+			sm.changes(e, this);
+		})
+
+		this.SaveManager = sm;
 	}
 }

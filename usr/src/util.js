@@ -56,6 +56,8 @@ HTMLElement.prototype.appendHTML = function(html) {
 	[...new DOMParser().parseFromString(html, "text/html").body.children].forEach(i => {
 		this.appendChild(i);
 	})
+
+	return this;
 }
 HTMLElement.prototype.toggleClass = function(c) {
 	this.classList.toggle(c);

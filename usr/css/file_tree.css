@@ -19,8 +19,9 @@ li.file {
 }
 
 li.file:hover {
-    background: #7e8c94;
-    color: #eee;
+    /* background: #7e8c94; */
+    background: #9005af;
+    color: #eee !important;
     cursor: pointer;
 }
 
@@ -43,7 +44,8 @@ li.file:hover {
 .label.hidden:before, .label:not(.hidden):before, .file_view:before {
     font-family: FontAwesome;
     padding: 5px;
-    color: #72a9d8;
+    /* color: #72a9d8; */
+    color: #9005af;
     width: 13px;
     height: 13px;
     display: block;
@@ -55,7 +57,9 @@ li.file:hover {
     font-weight: lighter;
     font-size: 9pt;
 }
-
+.label:before {
+    color: #9005af !important;
+}
 .label {
     display: block;
     width: calc(100% - 5px);

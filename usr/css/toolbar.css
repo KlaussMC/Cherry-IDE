@@ -1,0 +1,38 @@
+.tool-bar {
+    display: flex;
+    padding-left: 50px;
+}
+
+.tool-wrapper {
+    width: 100px;
+    text-align: center;
+}
+.tool {
+    align-items: stretch;
+    text-align: center;
+    margin: 3px;
+    width: 35px;
+    height: 35px;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.tool:hover {
+    background: #efefef;
+    /* border: 2px solid #ddd; */
+    /* width: 37px; */
+    /* height: 37px; */
+    /* margin-top: -1px;
+    margin-left: -1px; */
+}
+.tool:active {
+    background: #dadada;
+}
+
+.tool img {
+    width: 22.5px;
+}

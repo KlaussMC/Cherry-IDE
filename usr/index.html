@@ -3,45 +3,39 @@
 
 <head>
     <meta charset="utf-8">
-    <title>Snapback IDE</title>
-
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> -->
-
-    <!-- <link rel="stylesheet" href="/css/fa.css" /> -->
+    <title>Cherry IDE</title>
 
     <link rel="stylesheet" href="/css/layout.css" />
     <link rel="stylesheet" href="/css/master.css" />
     <link rel="stylesheet" href="/css/prism.css" />
     <link rel="stylesheet" href="/css/file_tree.css" />
     <link rel="stylesheet" href="/css/tabs.css" />
-    <link rel="stylesheet" href="/css/ui.css" />
+    <link rel="stylesheet" href="/css/menu.css" />
+    <link rel="stylesheet" href="/css/toolbar.css" />
 
 
     <script src="/lib/ui.js"></script>
 
     <script>
         let dir = '/Users/Jacob Schneider/Code/GIT/Browser', // define the current directory path
-            menu = null;
+            menu = null,
+            focused = null,
+            contextFocus,
+            keyBindings = [];
     </script>
+
+    <script src="/src/uicontroller.js"></script>
 </head>
 
 <body>
+    <div class="menu_bar hidden">
+
+    </div>
     <section class="wrapper">
         <section class="tool-bar">
-
+            
         </section>
         <section class="panel dir_explorer">
-            <script type="text/javascript">
-                document.querySelector('.panel.dir_explorer').addEventListener('mouseover', e => {
-                    menu = new UIbox(new template({content: {
-                        "New File": e => { console.log ('new file') },
-                        "Open File": e => { console.log('open file') },
-                        "Save File": e => { console.log('save file') },
-                        "spacer": null,
-                        "Clear All": e => { console.log('clearing everything') },
-                    }, type: 'menu', settings: {contentIsArray: true}}), "Context Menu", () => {}, () => {}, () => {})
-                })
-            </script>
             <ul class="dir_view">
 
             </ul>
@@ -61,6 +55,7 @@
 
     <script src="/lib/mousetrap.js"></script>
     <script src="/lib/prism.js"></script>
+
     <script src="/index.js" type="module" charset="utf-8"></script>
 
 </body>

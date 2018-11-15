@@ -1,0 +1,80 @@
+.menu_bar * {
+    z-index: 10;
+}
+.menu_bar {
+    position: fixed;
+    z-index: 9 !important;
+}
+
+.option {
+    padding: 0 10px 0 10px;
+}
+
+.menu_bar > .option > .submenu {
+    background: #ddd;
+    border-radius: 0;
+    border: none;
+    display: block;
+    padding: 0;
+    margin-top: -2px;
+}
+.menu_bar > .option > .submenu span.FA {
+    /* display: none; */
+    content: '\f0d7' !important;
+}
+
+.option:hover {
+    background: #ccc;
+}
+
+.menu_bar > .option > .submenu > .option {
+    display: block;
+    float: left;
+    min-width: 100px;
+}
+.menu_bar .option .submenu .option .submenu {
+    display: none;
+}
+
+.menu_bar .option .submenu > .option:hover > .submenu {
+    display: block;
+    position: absolute;
+}
+
+.submenu {
+    margin-top: 2px;
+    display: none;
+    min-width: 250px;
+    background: #eee;
+    /* border: 1px solid #ddd; */
+    border-radius: 10px;
+    padding: 10px 0 10px 0;
+    border-top-left-radius: 0;
+    box-shadow: 0 0 5px 0 #aaa;
+}
+
+.submenu .option {
+    padding: 3px 10px 3px 20px;
+    color: #555;
+    margin: 2px 0 2px 0;
+    transition: 0.2s;
+}
+
+.submenu .option:hover {
+    background: #9005af;
+    color: #eee;
+}
+
+.option span.binding, .option span.FA {
+    float: right;
+    color: #999 !important;
+}
+
+.menu_bar.hidden {
+    display: none;
+}
+
+/* .menu_bar > .submenu > .option > .submenu {
+    position: relative;
+    left: 100%;
+} */

@@ -149,12 +149,19 @@ pre[class*="language-"].line-numbers>code {
     pointer-events: none;
     display: block;
     counter-increment: linenumber;
+    /* padding: 5px 0 5px; */
+    padding-left: 10px;
 }
 
 .line-numbers-rows>span:before {
     content: counter(linenumber);
     color: #999;
     display: block;
-    padding-right: 0.8em;
+    /* padding-right: 0.8em; */
     text-align: right;
+}
+
+.pre {
+    position: relative !important;
+    padding-left: 3.8em !important;
 }
