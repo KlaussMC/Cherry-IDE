@@ -7,11 +7,14 @@ import MenuOption from '/src/menu/menu_option.js';
 import KeyBinding from '/src/keybinding.js';
 import SaveManager from '/src/files/Save_Manager.js';
 import applyToolBarFunctions from '/src/toolbar.js';
+import ThemeManager from '/src/ThemeManager.js';
 import {
 	toMDView,
 	toCodeView,
+	toEditorView,
 	showWelcomeScreen
 } from '/src/views.js';
+
 
 const {
 	ipcRenderer
@@ -31,8 +34,8 @@ MenuManager.renderMenu({
 	},
 	View: {
 		Theme: {
-			Light: new MenuOption(e => console.log("Light Theme")),
-			Dark: new MenuOption(e => console.log("Dark Theme"))
+			Light: new MenuOption(e => ThemeManager.lightTheme()),
+			Dark: new MenuOption(e => ThemeManager.darkTheme())
 		},
 		"Colour Scheme": {
 			Purple: new MenuOption(e => console.log("Purple"))
@@ -49,6 +52,8 @@ const fs = require('fs')
 addEventListener('load', async e => {
 	showWelcomeScreen();
 
+	ThemeManager.initTheme();
+
 	Prism.highlightAll();
 
 	FileManager.show();
@@ -63,6 +68,9 @@ addEventListener('load', async e => {
 				break;
 			case 2:
 				ContextHandler.text(contextFocus);
+				break
+			case 3:
+				ContextHandler.editor(contextFocus);
 		}
 	}
 
@@ -78,7 +86,8 @@ addEventListener('load', async e => {
 					content: {
 						"View Code": e => openContext(0),
 						"View Preview": e => openContext(1),
-						"View Text": e => openContext(2)
+						"View Text": e => openContext(2),
+						"Edit File": e => openContext(3)
 					},
 					type: 'menu',
 					settings: {
@@ -98,7 +107,10 @@ addEventListener('load', async e => {
 
 	applyToolBarFunctions([{
 		file: "editor_view.svg",
-		callback: e => console.log("Convert To Editor View")
+		callback: e => {
+			let tab = TabManager.getActiveTab()
+			TabManager.openTab(tab.name, true, tab.path, 3, false);
+		}
 	}, {
 		file: "settings.svg",
 		callback: e => console.log("Opening Settings")

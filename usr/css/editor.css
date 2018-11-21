@@ -1,0 +1,39 @@
+.view.editor {
+    overflow: hidden !important;
+    cursor: default;
+}
+
+.editor_view {
+    border: 1px solid purple;
+    min-height: 100%;
+    padding: 10px;
+    background: #eee;
+}
+
+.editor_page_view {
+    overflow: auto;
+    height: 100%;
+}
+
+.editor_view .editor_tool_bar {
+    width: 100%;
+    padding: 10px;
+    background: #fff;
+    /* position: fixed; */
+    z-index: 2;
+}
+
+.editor_view .page {
+    width: 14.8cm;
+    height: 21cm;
+    background: #fff;
+    border: 1px solid #ddd;
+    margin: 10px;
+    /* margin-top: 50px; */
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1.27cm;
+    z-index: 1 !important;
+    user-select: all;
+}

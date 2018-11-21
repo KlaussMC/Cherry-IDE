@@ -89,6 +89,7 @@
     left: 50%;
     box-shadow: 0 0 7px 0 #aaa;
     transform: translate(-50%);
+    z-index: 100000 !important;
 
     animation: 0.4s slideIn ease;
 }
@@ -161,4 +162,55 @@ pre code {
 
 button {
     cursor: pointer;
+}
+
+em {
+    font-style: italic;
+}
+strong {
+    font-weight: bold;
+}
+
+.page blockquote {
+    background: #eee;
+    padding: 4px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    margin-top: 7px;
+    border-left: 10px solid #ccc;
+}
+
+.page code, .page pre {
+    color: #333;
+    border: 1px solid #ccc;
+    background: #eee;
+    padding: 4px;
+    position:relative;
+    top: 20px;
+    border-radius: 3px;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+h2 {
+    font-size: 1.5em;
+}
+
+
+h3 {
+    font-size: 1.17em;
+}
+
+h4 {
+    font-size: initial;
+}
+
+h5 {
+    font-size: 0.83em;
+}
+
+h6 {
+    font-size: 0.67em;
 }

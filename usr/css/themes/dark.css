@@ -1,0 +1,12 @@
+body {
+    background: #333;
+    color: #eee;
+}
+
+.view:not(.code) * {
+    color: #eee;
+}
+
+.editor * {
+    color: #333;
+}

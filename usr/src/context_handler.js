@@ -10,6 +10,9 @@ export default class ContextHandler {
 	static async text(file) {
 		await open(file, 2);
 	}
+	static async editor(file) {
+		await open(file, 3);
+	}
 }
 
 async function open(file, view) {

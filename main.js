@@ -21,7 +21,7 @@ server.listen(port, err => {
 		win = new BrowserWindow({
 			width: 720,
 			height: 360,
-			title: 'Cherry IDE',
+			title: 'Cherry',
 			icon: path.join(__dirname, 'usr/res/icon.png')
 			// frame: false
 		});

@@ -1,4 +1,5 @@
 import TabManager from '/src/tabs/TabManager.js';
+import BeforeSave from '/src/BeforeSave.js';
 
 const fs = require('fs');
 
@@ -16,7 +17,7 @@ export default class SaveManager {
 
 	changes(e, viewHTML) {
 
-		let pos = viewHTML.getSelectionRange()
+		// let pos = viewHTML.getSelectionRange()
 
 		if (this.content != viewHTML.innerText) {
 			this.unsaved = true;
@@ -27,14 +28,13 @@ export default class SaveManager {
 
 		this.content = viewHTML.innerText;
 
-		viewHTML.focus();
-		viewHTML.setSelectionRange(pos, pos);
+		// viewHTML.focus();
+		// viewHTML.setSelectionRange(pos, pos);
 	}
 
-	save() {
-		fs.writeFileSync(this.file, this.content.toString() || document.querySelector(`#view_${this.tabID} code`).innerText);
+	async save() {
+		fs.writeFileSync(this.file, (await BeforeSave(this.getCurrentView(), this.content)) || (this.content.toString()) || (document.querySelector(`#view_${this.tabID} code`).innerText));
 		document.querySelector(`.tab#${this.tabID} button`).classList.remove("unsaved");
-
 
 		Prism.highlightAll();
 	}
@@ -43,5 +43,20 @@ export default class SaveManager {
 		console.log(TabManager.getActiveTab().SaveManager)
 		TabManager.getActiveTab().SaveManager.save();
 		this.unsaved = false;
+	}
+
+	getCurrentView() {
+		let f = [...document.querySelector(`.tab#${this.tabID} button`).classList] // WTF ARE THESE VAR NAMES!
+		let v = f.filter(i => ['editor', 'code', 'text', 'richtext'].indexOf(i) != -1);
+		switch (v) {
+			case 'code':
+				return 0;
+			case 'richtext':
+				return 1;
+			case 'text':
+				return 2;
+			case 'editor':
+				return 3;
+		}
 	}
 }

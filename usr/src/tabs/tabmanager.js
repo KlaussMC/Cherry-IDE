@@ -1,12 +1,14 @@
 import Tab from '/src/tabs/tab.js';
 import escapeHtml from '/src/util.js';
 import SaveManager from '/src/files/Save_Manager.js';
+import EditorFunction from '/src/editor.js'
 
 import {
 	toCodeView,
 	toMDView,
-	showWelcomeScreen,
-	toTextView
+	toTextView,
+	toEditorView,
+	showWelcomeScreen
 } from '/src/views.js';
 
 window.tabs = [];
@@ -27,11 +29,11 @@ export default class TabManager {
 				type: loc.split(/[\/\\]/).pop().split('.').pop()
 			})
 
-			await this.displayContent(view, tab, focusesTab, compile)
-
-			if (view == 0) {
+			if (view == 0 || view == 3) {
 				tab.setSaveManager(new SaveManager(loc, tab.id));
 			}
+
+			await this.displayContent(view, tab, focusesTab, compile)
 
 			// console.log(tabs, activeTab)
 
@@ -47,11 +49,17 @@ export default class TabManager {
 		} else if (view == 1) {
 			document.querySelector('.view_container').innerHTML += toMDView(tab.id, await tab.getContent(compile), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Rendered] " + tab.name
-		} else {
+		} else if (view == 2) {
 			document.querySelector('.view_container').innerHTML += toTextView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Text] " + tab.name
+		} else {
+			document.querySelector('.view_container').innerHTML += await toEditorView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
+			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Editor] " + tab.name
 		}
 		Prism.highlightAll();
+		if (view == 3) {
+			this.getActiveTab().applyHandler(new EditorFunction(tab.name, tab.id));
+		}
 	}
 
 	static switchTab(id) {
@@ -126,6 +134,16 @@ export default class TabManager {
 	}
 	static getTabs() {
 		return tabs;
+	}
+
+	static getTabByID(id) {
+		for (let i of tabs) {
+			if (i.id == id) {
+				return i;
+			}
+		}
+
+		return {}
 	}
 }
 

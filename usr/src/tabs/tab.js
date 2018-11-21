@@ -22,6 +22,7 @@ export default class Tab {
 
 	loadContent(properties) {
 		this.type = properties.type || properties.path.split(/\/|\\/).pop().split('.').pop();
+		this.path = properties.path
 		if (properties.fromFile) {
 			this.content = fs.readFileSync(decodeURI(properties.path)).toString();
 		} else {
@@ -50,11 +51,24 @@ export default class Tab {
 	setSaveManager(manager) {
 		this.SaveManager = manager;
 
-		let sm = this.SaveManager
-		document.querySelector(`#view_${this.id} code`).addEventListener('keydown', function(e) {
+		let sm = this.SaveManager;
+
+		coalescing(document.querySelectorAll(`#view_${this.id} code`), document.querySelectorAll(`#view_${this.id} page`)).forEach(i => i.addEventListener('keydown', function(e) {
 			sm.changes(e, this);
-		})
+		}))
 
 		this.SaveManager = sm;
 	}
+
+	applyHandler(handler) {
+		this[handler.name] = handler;
+		this[handler.name].begin();
+	}
+}
+
+function coalescing(op1, op2) {
+	if ([...op1].length == 0)
+		return op2;
+	else
+		return op1;
 }

@@ -57,7 +57,18 @@ const server = http.createServer((req, res) => {
 						});
 
 						res.write(JSON.stringify(convertToJSON(decodeURI(req.body), 0)))
-
+						break;
+					case '/getfile':
+						try {
+							res.writeHead(200, {
+								'Content-type': 'text/plain'
+							})
+							res.write(fs.readFileSync(path.join(__dirname, req.body)))
+						} catch (e) {
+							res.writeHead(404);
+							res.write("not found")
+						}
+						break;
 				}
 				res.end();
 			} catch (e) {

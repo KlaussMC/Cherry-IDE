@@ -6,4 +6,11 @@
         <tool><u>U</u></tool>
     </div>
 
+    <div class="editor_page_view">
+        <textarea class="edit_raw" autofocus></textarea>
+        <div class="page">
+            $content
+        </div>
+    <div>
+
 </div>

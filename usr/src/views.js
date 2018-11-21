@@ -29,8 +29,11 @@ export function showWelcomeScreen() {
 	document.querySelector('.view_container').innerHTML = `<div class="welcome view active"><h1>Welcome to MD IDE</h1>. Open a file to being</div>`
 }
 
-export function toEditorView() {
-	return require('fs').readFileSync(require('path').join(__dirname, '/views/editor_view.xml'))
+export async function toEditorView(id, code, activateView) {
+	return `<div class="editor view ${activateView ? " active" : ""}" id="view_${id}">${(await (await fetch('/getfile', { method: 'POST', body: "views/editor_view.xml" })).text()).replace("$content", await (await fetch('/compile', {
+		method: 'POST',
+		body: code
+	})).text())}</div>`
 }
 
 function hexToBase64(str) {
