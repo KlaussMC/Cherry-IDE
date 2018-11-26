@@ -21,8 +21,8 @@ export default class Tab {
 	}
 
 	loadContent(properties) {
-		this.type = properties.type || properties.path.split(/\/|\\/).pop().split('.').pop();
-		this.path = properties.path
+		this.type = properties.type || properties.path.split(/[\/\\]/).pop().split('.').pop();
+		this.path = properties.path;
 		if (properties.fromFile) {
 			this.content = fs.readFileSync(decodeURI(properties.path)).toString();
 		} else {
@@ -34,10 +34,10 @@ export default class Tab {
 
 	show() {
 
-		document.querySelector('.tab-bar').appendHTML(`<div class="tab active" id="${this.id}"><h3 class="tab_header">${this.name}</h3><button class="tab_close_btn"></button></div>`)
+		document.querySelector('.tab-bar').appendHTML(`<div class="tab active" id="${this.id}"><h3 class="tab_header">${this.name}</h3><button class="tab_close_btn"></button></div>`);
 		document.querySelector(`#${this.id} button`).addEventListener("click", this.close);
 
-		document.querySelector(`.tab#${this.id}`).addEventListener("click", e => TabManager.switchTab(this.id))
+		document.querySelector(`.tab#${this.id}`).addEventListener("click", e => TabManager.switchTab(this.id));
 	}
 
 	async getContent(compileText) {
@@ -55,7 +55,7 @@ export default class Tab {
 
 		coalescing(document.querySelectorAll(`#view_${this.id} code`), document.querySelectorAll(`#view_${this.id} page`)).forEach(i => i.addEventListener('keydown', function(e) {
 			sm.changes(e, this);
-		}))
+		}));
 
 		this.SaveManager = sm;
 	}
@@ -67,7 +67,7 @@ export default class Tab {
 }
 
 function coalescing(op1, op2) {
-	if ([...op1].length == 0)
+	if ([...op1].length === 0)
 		return op2;
 	else
 		return op1;

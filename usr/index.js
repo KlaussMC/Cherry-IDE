@@ -1,4 +1,3 @@
-import escapeHtml from '/src/util.js';
 import TabManager from '/src/tabs/tabmanager.js';
 import FileManager from '/src/files/filemanager.js';
 import MenuManager from '/src/menu/menumanager.js';
@@ -42,9 +41,9 @@ MenuManager.renderMenu({
 		}
 	},
 	Help: {
-		About: new MenuOption(e => Alert(`The Cherry IDE was designed based on a cross between the Atom Text Editor and Microsoft Office Word. It uses the following libaries to bring you the experience: <br/><br/> <ul> <li> Electron </li> <li> Markdown-It </li> <li> Prism.JS </li> <li> UI.JS </li> <li> Mousetrap.JS </li>`, "Credits"))
+		About: new MenuOption(e => Alert(`The Cherry IDE was designed based on a cross between the Atom Text Editor and Microsoft Office Word. It uses the following libraries to bring you the experience: <br/><br/> <ul> <li> Electron </li> <li> Markdown-It </li> <li> Prism.JS </li> <li> UI.JS </li> <li> Mousetrap.JS </li>`, "Credits"))
 	}
-})
+});
 
 const path = require('path');
 const fs = require('fs')
@@ -68,11 +67,11 @@ addEventListener('load', async e => {
 				break;
 			case 2:
 				ContextHandler.text(contextFocus);
-				break
+				break;
 			case 3:
 				ContextHandler.editor(contextFocus);
 		}
-	}
+	};
 
 	document.addEventListener('contextmenu', function(e) {
 		focused = e.path[0].querySelector('.file_view');
@@ -98,34 +97,34 @@ addEventListener('load', async e => {
 				menu.show(e.clientX, e.clientX);
 			}
 		}
-	})
+	});
 
-	addEventListener('click', e => {
+	addEventListener('click', () => {
 		if (menu) // this is the UIBox Menu
 			menu.unrender();
-	})
+	});
 
 	applyToolBarFunctions([{
 		file: "editor_view.svg",
 		callback: e => {
-			let tab = TabManager.getActiveTab()
+			let tab = TabManager.getActiveTab();
 			TabManager.openTab(tab.name, true, tab.path, 3, false);
 		}
 	}, {
 		file: "settings.svg",
-		callback: e => console.log("Opening Settings")
+		callback: () => console.log("Opening Settings")
 	}])
 
 	// console.log(await Prompt("What's your name?", "Information required", "Name"));
-})
+});
 
-new KeyBinding("ctrl+r", e => window.location.reload());
-new KeyBinding("ctrl+shift+r", e => window.location.reload());
-new KeyBinding("f5", e => window.location.reload());
-new KeyBinding("f11", e => ipcRenderer.send('fullscreen', fullscreen = !fullscreen));
-new KeyBinding('ctrl+w', e => {
+new KeyBinding("ctrl+r", () => window.location.reload());
+new KeyBinding("ctrl+shift+r", () => window.location.reload());
+new KeyBinding("f5", () => window.location.reload());
+new KeyBinding("f11", () => ipcRenderer.send('fullscreen', fullscreen = !fullscreen));
+new KeyBinding('ctrl+w', () => {
 	try {
 		TabManager.getActiveTab().close(true)
 	} catch (e) {}
 });
-new KeyBinding("alt", e => document.querySelector('.menu_bar').classList.toggle('hidden'))
+new KeyBinding("alt", () => document.querySelector('.menu_bar').classList.toggle('hidden'));

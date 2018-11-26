@@ -36,6 +36,10 @@ export async function toEditorView(id, code, activateView) {
 	})).text())}</div>`
 }
 
+export async function toGUIView(id, activateView) {
+	return `<div class="gui view ${activateView ? " active" : ""}" id="view_${id}">${await (await fetch('/getfile', { method: 'POST', body: 'views/gui.xml' })).text()}</div>`
+}
+
 function hexToBase64(str) {
 	return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 }

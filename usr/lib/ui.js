@@ -10,7 +10,7 @@ class UIbox {
 		this.oncancel = oncancel;
 		this.template.parent = this;
 		this.showing = false;
-		this.template.setBtnBehavoiurs()
+		this.template.setBtnBehavoiurs();
 		this.self;
 	}
 	show(x, y) {
@@ -36,19 +36,19 @@ class UIbox {
 		this.show();
 		return new Promise((res, rej) => {
 			this.resolve = (function() {
-				let parsedBodyContent = {}
+				let parsedBodyContent = {};
 				let body = [...this.self.querySelector('.content').children];
 				body.forEach(element => {
 					if (element instanceof HTMLInputElement) {
 						parsedBodyContent[element.getAttribute('name')] = element.value;
-					} else if (element.getAttribute('contenteditable') == 'true') {
+					} else if (element.getAttribute('contenteditable') === 'true') {
 						parsedBodyContent[element.getAttribute('name')] = element.innerHTML;
 					}
 				});
 				[...this.self.querySelectorAll('.output')].forEach(element => {
 					parsedBodyContent[element.getAttribute('name') || "info" + Object.keys(parsedBodyContent).length] = element.innerHTML.trim();
-				})
-				if (Object.keys(parsedBodyContent).length == 1) parsedBodyContent = parsedBodyContent[Object.keys(parsedBodyContent)[0]];
+				});
+				if (Object.keys(parsedBodyContent).length === 1) parsedBodyContent = parsedBodyContent[Object.keys(parsedBodyContent)[0]];
 				res(parsedBodyContent);
 			});
 			this.reject = rej;
@@ -66,8 +66,8 @@ class UIbox {
 				break;
 			case 'toast':
 				templateHTML = `<br/><div class='uibox toast wrapper'>${template.content}</div>`
-				setTimeout(e => {
-					this.unrender()
+				setTimeout(() => {
+					this.unrender();
 					try {
 						this.onconfirm();
 					} catch {
@@ -85,14 +85,14 @@ class UIbox {
 				templateHTML = `<div class='uibox menu wrapper'><ul class='uibox menu container'>`
 				let keys = Object.keys(this.template.content)
 				keys.forEach(key => {
-					templateHTML += key != 'spacer' ? `<li class="uibox menu option"><span class='uibox menu option caption'>${key}</span></li>` : `<hr/>`
+					templateHTML += key !== 'spacer' ? `<li class="uibox menu option"><span class='uibox menu option caption'>${key}</span></li>` : `<hr/>`
 				})
 		}
 		return templateHTML + `</div></div>`
 	}
 	addBtnListeners() {
 		try {
-			this.self.addEventListener('keypress', e => e.keyCode == 13 ? this.resolve(this.unrender()) : null) // make ESC close dialog
+			this.self.addEventListener('keypress', e => e.keyCode === 13 ? this.resolve(this.unrender()) : null) // make ESC close dialog
 			let buttons = [...this.self.querySelector('.buttons').children];
 			buttons.forEach((button, i) => {
 				if (button) {
@@ -110,7 +110,7 @@ class UIbox {
 		} catch (e) {
 			null
 		}
-		if (this.template.type == 'notification') {
+		if (this.template.type === 'notification') {
 			this.self.querySelector('.notification.message').addEventListener('click', e => {
 				try {
 					this.onconfirm()
@@ -127,9 +127,9 @@ class UIbox {
 				}
 				this.unrender();
 			})
-		} else if (this.template.type == "menu") {
+		} else if (this.template.type === "menu") {
 			[...this.self.querySelector('.uibox.menu').children].forEach((option, index) => {
-				if (option.children.length != 0) { // filter out HR elements
+				if (option.children.length !== 0) { // filter out HR elements
 					option.addEventListener('click', e => {
 						this.template.content[Object.keys(this.template.content)[index]]()
 						this.unrender()
@@ -154,7 +154,7 @@ class template {
 	}
 	setBtnBehavoiurs() {
 		this.buttons.forEach(btn => {
-			btn.parent = this.parent
+			btn.parent = this.parent;
 			btn.setBehaviour();
 		})
 	}

@@ -1,0 +1,13 @@
+<div class="gui_view">
+    <div class="toolbox">
+        <ul class="tools">
+            <li class="tool"></li>
+        </ul>
+    </div>
+    <div class="toolbar">
+        <div class="tool">
+            Save
+        </div>
+    </div>
+    <div class="display"></div>
+</div>

@@ -3,11 +3,11 @@
     <div class="editor_tool_bar">
         <tool><b>B</b></tool>
         <tool><i>I</i></tool>
-        <tool><u>U</u></tool>
+        <tool><strike>S</strike></tool>
     </div>
 
     <div class="editor_page_view">
-        <textarea class="edit_raw" autofocus></textarea>
+        <textarea class="edit_raw" autofocus="true"></textarea>
         <div class="page">
             $content
         </div>
