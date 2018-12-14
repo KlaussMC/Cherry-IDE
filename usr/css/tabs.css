@@ -14,8 +14,8 @@
     line-height: 15pt;
     padding: 5px;
     border: 1px solid #999;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
+    /*border-top-left-radius: 10px;*/
+    /*border-top-right-radius: 10px;*/
     margin: -5px;
     max-width: 250px;
     width: 100%;
@@ -23,7 +23,7 @@
     display: block;
     float: left;
     font-weight: 600;
-    border-top: 4px solid #c802ea;
+    /*border-top: 4px solid #c802ea;*/
     transition: 0.125s;
     height: 35px;
 

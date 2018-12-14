@@ -23,8 +23,14 @@ let fullscreen = false;
 
 MenuManager.renderMenu({
 	File: {
-		New: new MenuOption(e => console.log("New File"), "ctrl+n"),
-		Open: new MenuOption(e => console.log("Open File"), "ctrl+o"),
+		New: {
+			Project: new MenuOption(e => console.log("New Project"), "ctrl+shift+n"),
+			File: new MenuOption(e => console.log("New File"), "ctrl+n")
+		},
+		Open: {
+			Project: new MenuOption(e => console.log("Open Project"), "ctrl+shift+o"),
+			File: new MenuOption(e => console.log("Open File"), "ctrl+o")
+		},
 		Save: new MenuOption(e => SaveManager.saveFile(), "ctrl+s")
 	},
 	Edit: {
@@ -52,6 +58,8 @@ addEventListener('load', async e => {
 	showWelcomeScreen();
 
 	ThemeManager.initTheme();
+
+	document.querySelector(".view_container").style.maxWidth = document.querySelector(".view_container").offsetWidth + "px";
 
 	Prism.highlightAll();
 

@@ -24,7 +24,9 @@
     font-family: FontAwesome;
     src: url(/css/fonts/fa.otf);
 }
-
+.uibox.display_area {
+    z-index: 100000;
+}
 .uibox.menu.wrapper {
     display: block;
     position: absolute;
@@ -213,4 +215,29 @@ h5 {
 
 h6 {
     font-size: 0.67em;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    padding: 0;
+    border: none;
+    margin: 20px 0 10px 0;
+}
+input[type=range]::-webkit-slider-thumb {
+    /*border-radius: inherit !important;*/
+    -webkit-appearance: none;
+    background: #fff;
+    color: #fff;
+    border: 1px solid purple;
+    width: 16px;
+    height: 16px;
+    border-radius: 100px;
+    margin-top: -8px;
+    cursor: pointer;
+}
+input[type=range]::-webkit-slider-runnable-track {
+    border-collapse: collapse;
+    width: 100%;
+    border: 0.5px solid purple;
+    height: 0 !important;
 }

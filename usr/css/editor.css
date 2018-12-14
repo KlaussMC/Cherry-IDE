@@ -1,31 +1,41 @@
 .view.editor {
     overflow: hidden !important;
     cursor: default;
+    font-family: "Segoe UI", "Roboto", Arial, Helvetica, sans-serif;
 }
 
 .editor_view {
     border: 1px solid purple;
-    min-height: 100%;
-    padding: 10px;
+    /*min-height: 100%;*/
+    /*padding: 10px;*/
+    position: relative;
+    top: 0;
+    bottom: 0;
     background: #eee;
 }
 
 .editor_page_view {
     overflow: auto;
-    height: 100%;
+    /*height: 100%;*/
+    top: 0;
+    position: relative;
+    bottom: 0;
+
+    zoom: 75%;
 }
 
 .editor_view .editor_tool_bar {
     width: 100%;
     padding: 10px;
     background: #fff;
+    box-shadow: 0 1px 1px 0 #888;
     /* position: fixed; */
     z-index: 2;
 }
 
 .editor_view .page {
-    width: 14.8cm;
-    height: 21cm;
+    width: 29.6cm;
+    height: 42cm;
     background: #fff;
     border: 1px solid #ddd;
     margin: 10px;
@@ -33,7 +43,48 @@
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    padding: 1.27cm;
+    padding: 2.54cm;
     z-index: 1 !important;
     user-select: all;
+}
+
+/*.editor_view .page {*/
+/*}*/
+
+.editor_view .zoom {
+    width: 100px;
+}
+
+.edit_raw {
+    position: absolute;
+    /*visibility: hidden;*/
+    height: 0;
+    margin-top: -10px;
+}
+
+.editor_cursor {
+    border: 1px solid #444;
+    width: 0;
+    display: inline;
+    box-sizing: border-box;
+    position: relative;
+    left: -2px;
+    margin-right: -2px;
+    animation: flash 1s ease infinite;
+    /*animation-direction: ;*/
+}
+
+@keyframes flash {
+    0% {
+        border-color: #444;
+    }
+    45% {
+        border-color: #444;
+    }
+    55% {
+        border-color: transparent;
+    }
+    100% {
+        border-color: transparent;
+    }
 }
