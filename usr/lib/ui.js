@@ -62,10 +62,10 @@ class UIbox {
 				templateHTML += template.content + `</div><div class="uibox box buttons">`;
 				template.buttons.forEach((button, index) => {
 					templateHTML += `<button class='uibox button', id='btn${this.drawArea.querySelectorAll('.buttons button').length + index + 1}'>${button.text}</button>`;
-				})
+				});
 				break;
 			case 'toast':
-				templateHTML = `<br/><div class='uibox toast wrapper'>${template.content}</div>`
+				templateHTML = `<br/><div class='uibox toast wrapper'>${template.content}</div>`;
 				setTimeout(() => {
 					this.unrender();
 					try {
@@ -76,23 +76,23 @@ class UIbox {
 				}, template.settings.duration || 2000);
 				break;
 			case 'notification':
-				templateHTML = `<div class='uibox notification wrapper'><div class='uibox notification message'>${template.content}</div><button class='uibox global close'></button></div>`
+				templateHTML = `<div class='uibox notification wrapper'><div class='uibox notification message'>${template.content}</div><button class='uibox global close'></button></div>`;
 				setTimeout(e => {
 					this.unrender()
 				}, template.settings.duration || 5000);
 				break;
 			case 'menu':
-				templateHTML = `<div class='uibox menu wrapper'><ul class='uibox menu container'>`
-				let keys = Object.keys(this.template.content)
+				templateHTML = `<div class='uibox menu wrapper'><ul class='uibox menu container'>`;
+				let keys = Object.keys(this.template.content);
 				keys.forEach(key => {
-					templateHTML += key !== 'spacer' ? `<li class="uibox menu option"><span class='uibox menu option caption'>${key}</span></li>` : `<hr/>`
+					templateHTML += key !== 'spacer' ? `<li class="uibox menu option"><span class='uibox menu option caption'>${key}</span></li>` : `<hr/>`;
 				})
 		}
 		return templateHTML + `</div></div>`
 	}
 	addBtnListeners() {
 		try {
-			this.self.addEventListener('keypress', e => e.keyCode === 13 ? this.resolve(this.unrender()) : null) // make ESC close dialog
+			this.self.addEventListener('keypress', e => e.keyCode === 13 ? this.resolve(this.unrender()) : null); // make ESC close dialog
 			let buttons = [...this.self.querySelector('.buttons').children];
 			buttons.forEach((button, i) => {
 				if (button) {
@@ -118,7 +118,7 @@ class UIbox {
 					null
 				}
 				this.unrender();
-			})
+			});
 			this.self.querySelector('.global.close').addEventListener('click', e => {
 				try {
 					this.oncancel()
@@ -131,7 +131,7 @@ class UIbox {
 			[...this.self.querySelector('.uibox.menu').children].forEach((option, index) => {
 				if (option.children.length !== 0) { // filter out HR elements
 					option.addEventListener('click', e => {
-						this.template.content[Object.keys(this.template.content)[index]]()
+						this.template.content[Object.keys(this.template.content)[index]]();
 						this.unrender()
 					})
 				}
@@ -140,7 +140,7 @@ class UIbox {
 	}
 	unrender() {
 		if (this.showing) {
-			this.self.outerHTML = ""
+			this.self.outerHTML = "";
 			this.showing = false;
 		}
 	}
@@ -176,14 +176,14 @@ class button {
 						this.submitsForm = true;
 						this.closeDialog = true;
 						this.parent.onconfirm();
-					})
+					});
 					break;
 				case 'cancel':
 					this.callback = (function() {
 						this.submitsForm = false;
 						this.closeDialog = true;
 						this.parent.oncancel();
-					})
+					});
 					break;
 			}
 		}

@@ -4,14 +4,15 @@ const path = require('path');
 const usr = path.join(__dirname, 'usr');
 const lib = path.join(usr, 'lib');
 
-const compiler = require('./compiler')
+const compiler = require('./compiler');
+const complex = require('./complex');
 
 const http = require('http');
 const server = http.createServer((req, res) => {
 
 	let parsed = parseURL(req.url);
 
-	if (req.method == 'GET') {
+	if (req.method === 'GET') {
 		switch (parsed.path) {
 			case '/': // switch block simply defines file aliases, so what will be requested as '/' is read from 'index.html' etc.
 				res.writeHead(200, {
@@ -36,7 +37,7 @@ const server = http.createServer((req, res) => {
 				}
 		}
 		res.end();
-	} else if (req.method == "POST") {
+	} else if (req.method === "POST") {
 		req.body = [];
 		req.on('data', (chunk) => {
 			req.body.push(chunk);
@@ -48,15 +49,21 @@ const server = http.createServer((req, res) => {
 					case '/compile':
 						res.writeHead(200, {
 							'Content-type': 'text/html'
-						})
+						});
 						res.write(compiler(req.body));
+						break;
+					case '/complex':
+						res.write(200, {
+							'Content-type': 'text/html'
+						});
+						res.write(complex(req.bod));
 						break;
 					case '/getdir':
 						res.writeHead(200, {
 							'Content-type': 'application/json'
 						});
 
-						res.write(JSON.stringify(convertToJSON(decodeURI(req.body), 0)))
+						res.write(JSON.stringify(convertToJSON(decodeURI(req.body), 0)));
 						break;
 					case '/getfile':
 						try {
@@ -85,16 +92,16 @@ let parseURL = url => {
 		params = {};
 
 	tmpParams.forEach(p => {
-		let s = p.split('=')
+		let s = p.split('=');
 		params[s[0]] = s[1]
-	})
+	});
 
 	return {
 		path,
 		file,
 		params
 	}
-}
+};
 
 let getContentType = function(file) {
 	switch (file.split('.').pop()) {
@@ -115,14 +122,14 @@ let getContentType = function(file) {
 		default:
 			return 'text/plain';
 	}
-}
+};
 
 let convertToJSON = (input, depth) => {
-	let output = {}
+	let output = {};
 	if (depth < 10) {
 		try {
 			fs.readdirSync(input).forEach(item => {
-				if (item != "node_modules" && item != ".git")
+				if (item !== "node_modules" && item !== ".git")
 					output[item] = fs.lstatSync(path.join(input, item)).isDirectory() ? convertToJSON(path.join(input, item), depth + 1) : "file";
 			})
 		} catch (e) {

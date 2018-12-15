@@ -1,7 +1,7 @@
 {
-    "name": "Mardown-IDE",
+    "name": "cherry-ide",
     "version": "1.0.0",
-    "description": "A full IDE for markdown and Rich text",
+    "description": "A full IDE for markdown and Rich text as well as a full graphical website builder",
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
         "url": "git+https://github.com/KlaussMC/Markdown-IDE.git"
     },
     "keywords": [],
-    "author": "",
+    "author": "Jacob Schneider",
     "license": "MIT",
     "bugs": {
         "url": "https://github.com/KlaussMC/Markdown-IDE/issues"
@@ -19,6 +19,8 @@
     "homepage": "https://github.com/KlaussMC/Markdown-IDE#readme",
     "dependencies": {
         "electron": "^3.0.8",
-        "electron-titlebar": "*"
-    }
+        "electron-titlebar": "*",
+        "markdown-it-regexp": "^0.4.0",
+	  "markdown-it": "latest"
+	}
 }

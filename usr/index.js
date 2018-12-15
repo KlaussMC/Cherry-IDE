@@ -52,7 +52,7 @@ MenuManager.renderMenu({
 });
 
 const path = require('path');
-const fs = require('fs')
+const fs = require('fs');
 
 addEventListener('load', async e => {
 	showWelcomeScreen();
