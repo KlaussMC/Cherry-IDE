@@ -40,6 +40,10 @@ export async function toGUIView(id, activateView) {
 	return `<div class="gui view ${activateView ? " active" : ""}" id="view_${id}">${await (await fetch('/getfile', { method: 'POST', body: 'views/gui.xml' })).text()}</div>`
 }
 
+
+export async function errorView(id, activateView, message) {
+	return await (await fetch('/getfile', {method: 'POST', body: '/views/error_view.xml' })).text().replace("$content", message);
+}
 function hexToBase64(str) {
 	return btoa(String.fromCharCode.apply(null, str.replace(/\r|\n/g, "").replace(/([\da-fA-F]{2}) ?/g, "0x$1 ").replace(/ +$/, "").split(" ")));
 }
@@ -52,7 +56,7 @@ function isOk(img) {
 	// However, they do have two very useful properties: naturalWidth and
 	// naturalHeight. These give the true size of the image. If it failed
 	// to load, either of these should be zero.
-	if (typeof img.naturalWidth != "undefined" && img.naturalWidth == 0) {
+	if (typeof img.naturalWidth != "undefined" && img.naturalWidth === 0) {
 		return false;
 	}
 

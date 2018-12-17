@@ -2,23 +2,26 @@ import Tab from '/src/tabs/tab.js';
 import escapeHtml from '/src/util.js';
 import SaveManager from '/src/files/Save_Manager.js';
 import EditorFunction from '/src/editor.js'
+import GUIFunction from '/src/gui.js'
 
 import {
 	toCodeView,
 	toMDView,
 	toTextView,
 	toEditorView,
-	showWelcomeScreen
+	showWelcomeScreen,
+	toGUIView,
+	errorView
 } from '/src/views.js';
 
 window.tabs = [];
-window.activeTab = ""
+window.activeTab = "";
 
 export default class TabManager {
 	static async openTab(tabName, focusesTab, loc, view, compile) {
 
 		try {
-			let e = document.querySelector('#view_' + this.getActiveTab().id)
+			let e = document.querySelector('#view_' + this.getActiveTab().id);
 			if (e) e.classList.remove('active')
 
 		} finally {
@@ -27,13 +30,13 @@ export default class TabManager {
 				fromFile: true,
 				path: loc,
 				type: loc.split(/[\/\\]/).pop().split('.').pop()
-			})
+			});
 
-			if (view == 0 || view == 3) {
+			if (view === 0 || view === 3) {
 				tab.setSaveManager(new SaveManager(loc, tab.id));
 			}
 
-			await this.displayContent(view, tab, focusesTab, compile)
+			await this.displayContent(view, tab, focusesTab, compile);
 
 			// console.log(tabs, activeTab)
 
@@ -43,22 +46,31 @@ export default class TabManager {
 	}
 
 	static async displayContent(view, tab, focusesTab, compile) {
-		if (view == 0) {
+		if (view === 0) {
 			document.querySelector('.view_container').innerHTML += toCodeView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Code] " + tab.name
-		} else if (view == 1) {
+		} else if (view === 1) {
 			document.querySelector('.view_container').innerHTML += toMDView(tab.id, await tab.getContent(compile), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Rendered] " + tab.name
-		} else if (view == 2) {
+		} else if (view === 2) {
 			document.querySelector('.view_container').innerHTML += toTextView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Text] " + tab.name
-		} else {
+		} else if (view === 3) {
 			document.querySelector('.view_container').innerHTML += await toEditorView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
 			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Editor] " + tab.name
+		} else if (view === 4) {
+			document.querySelector('.view_container').innerHTML += await toGUIView(tab.id, escapeHtml(await tab.getContent()), focusesTab);
+			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[GUI] " + tab.name
+		} else {
+			document.querySelector('.view_container').innerHTML += await errorView(tab.id, true, `The view type requested is unknown. This may be caused by an incorrect call to <code>displayContent</code>`);
+			document.querySelector(`.tab#${activeTab}`).querySelector('.tab_header').innerHTML = "[Error] Unknown format"
 		}
+
 		Prism.highlightAll();
-		if (view == 3) {
+		if (view === 3) {
 			this.getActiveTab().applyHandler(new EditorFunction(tab.name, tab.id));
+		} else if (view === 4) {
+			this.getActiveTab().applyHandler(new GUIFunction(tab.name, tab.id));
 		}
 	}
 

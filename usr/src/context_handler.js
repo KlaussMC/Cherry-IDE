@@ -13,10 +13,13 @@ export default class ContextHandler {
 	static async editor(file) {
 		await open(file, 3);
 	}
+	static async gui(file) {
+		await (open(file, 4));
+	}
 }
 
 async function open(file, view) {
 	console.log(view);
-	await TabManager.openTab(file.split(/[\/\\]/).pop(), true, require('path').join(dir, file), view, file.split(/[\/\\]/).pop().split('.').pop() == "md" && view == 1)
+	await TabManager.openTab(file.split(/[\/\\]/).pop(), true, require('path').join(dir, file), view, file.split(/[\/\\]/).pop().split('.').pop() === "md" && view === 1)
 	await TabManager.switchTab(TabManager.getActiveTab().id);
 }

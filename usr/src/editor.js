@@ -4,159 +4,105 @@ import TabManager from '/src/tabs/TabManager.js';
 
 export default class EditorFunction extends Handler {
 	constructor(name, id) {
-		super(arguments, ["overrideKeyPress"]);
+		super(arguments, ["begin"]);
 		this.id = id;
 
 		this.bindings = [];
 
 		this.zoomLevel = 100;
 
-		document.querySelector(`#view_${this.id} textarea`).value = TabManager.getTabByID(this.id).content;
-
-		[...document.querySelectorAll(`#view_${this.id} .page`)].forEach(i => i.addEventListener("click", e => document.querySelector(".view.editor textarea").focus()))
-
-		let self = this;
-		document.querySelector('.zoom').addEventListener('input', function (e) {
-			self.setZoom(this.value);
-		})
-		document.querySelector('.zoom-out-btn').addEventListener('click', e => self.zoomOut());
-		document.querySelector('.zoom-in-btn').addEventListener('click', e => self.zoomIn());
 	}
 
-	overrideKeyPress() {
+	async begin() {
+		document.querySelector(`#view_${this.id} .page`).innerHTML = await (await fetch('/compile', {
+			method: 'POST',
+			body: TabManager.getTabByID(this.id).content
+		})).text();
 
-		let rewrite = ["Enter", "*", "_", "~", "\\", "Backspace", "Delete"];
-		let replace = ["\\\n", "\\*", "\\_", "\\~", "\\\\", "", ""]; // two blank strings are important
+		const self = this;
+		document.querySelector('.zoom').addEventListener('input', function (e) {
+			self.setZoom(this.value);
+		});
+		document.querySelector('.zoom-out-btn').addEventListener('click', e => self.zoomOut());
+		document.querySelector('.zoom-in-btn').addEventListener('click', e => self.zoomIn());
 
-		let deleteChars = "*_~";
+		[...document.querySelectorAll(`#view_${this.id}`)].forEach(e => this.addBindings());
 
-		let self = this;
+		document.querySelector(".bold").addEventListener("click", e => this.bold());
+		document.querySelector(".italic").addEventListener("click", e => this.italic());
+		document.querySelector(".strikethrough").addEventListener("click", e => this.strikethrough());
+		document.querySelector(".underline").addEventListener("click", e => this.underline());
 
-		[...document.querySelectorAll(`#view_${this.id} .page`)].forEach(e => this.addBindings());
-		[...document.querySelectorAll(`#view_${this.id} textarea`)].forEach(i => i.addEventListener("keydown", async function(e) {
+		[...document.querySelectorAll(".page")].forEach(i => {
+			i.addEventListener("click", e => this.updateUI());
+			i.addEventListener("keydown", e => this.updateUI());
+			i.addEventListener("keyup", e => this.updateUI());
+			i.addEventListener("keypress", e => this.updateUI());
+		});
+		[...document.querySelectorAll("tool")].forEach(i => {
+			i.addEventListener("click", e => this.updateUI());
+			i.addEventListener("keydown", e => this.updateUI());
+			i.addEventListener("keyup", e => this.updateUI());
+			i.addEventListener("keypress", e => this.updateUI());
+		});
 
-			let cursorPos = this.selectionStart;
-
-			if (e.key === "Backspace") {
-				e.preventDefault();
-
-				let targetCharacter = deleteChars.indexOf(this.value[cursorPos]) > -1 ? this.value[cursorPos] : null;
-
-				if (EditorFunction.shouldDeletePattern(this, targetCharacter, cursorPos)) {
-					let newInput = EditorFunction.deletePattern(this, targetCharacter, cursorPos);
-					this.value = newInput.cont;
-					this.setSelectionRange(newInput.cursorPos, newInput.cursorPos);
-				} else {
-					this.value = this.value.substring(0, this.selectionStart - 1) + this.value.substring(this.selectionEnd);
-					this.setSelectionRange(cursorPos - 1, cursorPos - 1);
-
-					// cursorPos = this.selectionStart;
-				}
-
-			}
-
-			 else if (e.key === "Delete") {
-				e.preventDefault();
-
-				let targetCharacter = deleteChars.indexOf(this.value[cursorPos]) > -1 ? this.value[cursorPos] : null;
-
-				if (EditorFunction.shouldDeletePattern(this, targetCharacter, cursorPos)) {
-					let newInput = EditorFunction.deletePattern(this, targetCharacter, cursorPos);
-					this.value = newInput.cont;
-					this.setSelectionRange(newInput.cursorPos, newInput.cursorPos);
-				} else {
-
-					this.value = this.value.substring(0, this.selectionStart - 1) + this.value.substring(this.selectionEnd);
-					this.setSelectionRange(cursorPos, cursorPos);
-
-					// cursorPos = this.selectionStart;
-				}
-
-			} else {
-				let index = rewrite.indexOf(e.key);
-
-				if (index > -1) {
-					e.preventDefault();
-					let cursorPos = this.selectionStart + replace[index].length;
-					let beforeCursor = this.value.substring(0, this.selectionStart);
-					let afterCursor = this.value.substring(this.selectionEnd);
-					this.value = replace[index];
-					this.value = beforeCursor + this.value + afterCursor;
-
-					this.setSelectionRange(cursorPos, cursorPos);
-				}
-
-			}
-
-			setTimeout(() => {
-				self.compile().then(res => {
-					document.querySelector(".page").innerHTML = `${document.querySelector(".page").innerHTML.substring(0, this.getCursorPosition())}<span class="editor_cursor"></span>${document.querySelector(".page").innerHTML.substring(this.getCursorPosition())}`
-				});
-			}, 1);
-
-		}))
+		document.querySelector('.font-size').addEventListener('input', function (e) {
+			document.execCommand('fontSize', false, this.value);
+		})
 	}
 
 	addBindings() {
 		this.bindings.push(new Binding("ctrl+b", e => this.bold()));
 		this.bindings.push(new Binding("ctrl+i", e => this.italic()));
 		this.bindings.push(new Binding("ctrl+t", e => this.strikethrough()));
+		this.bindings.push(new Binding("ctrl+u", e => this.underline()));
 		this.bindings.push(new Binding("ctrl+;", e => this.code()));
 
 		this.bindings.push(new Binding("ctrl+=", e => this.zoomIn()));
 		this.bindings.push(new Binding("ctrl+-", e => this.zoomOut()));
+
+		this.bindings.push(new Binding("ctrl+shift+,", e => this.reduceFontSize()));
+		this.bindings.push(new Binding("ctrl+shift+.", e => this.increaseFontSize()));
+	}
+
+	increaseFontSize() {
+		document.execCommand('increaseFontSize', false, null);
+		this.updateUI();
+	}
+
+	reduceFontSize() {
+		document.execCommand('decreaseFontSize', false, null);
+		this.updateUI();
+	}
+
+	setFontSize(size) {
+		document.execCommand('fontSize', false, size);
+		this.updateUI();
 	}
 
 	bold() {
-		this.insertText("****");
-		// .value += "****";
+		document.execCommand('bold', false, null);
+		this.updateUI();
 	}
 
 	italic() {
-		// document.querySelector(`#view_${this.id} textarea`).value += "__";
-		this.insertText("__");
+		document.execCommand('italic', false, null);
+		this.updateUI();
 	}
 
 	code() {
-		// document.querySelector(`#view_${this.id} textarea`).value += "``";
-		this.insertText("``");
+		console.log('c');
+		this.updateUI();
 	}
 
 	strikethrough() {
-		// document.querySelector(`#view_${this.id} textarea`).value += "~~~~";
-		this.insertText("~~~~");
+		document.execCommand('strikeThrough', false, null);
+		this.updateUI();
 	}
 
-	async compile() {
-		TabManager.getTabByID(this.id).content = document.querySelector(`#view_${this.id} textarea`).value;
-		document.querySelector(`#view_${this.id} .page`).innerHTML = await (await (fetch('/compile', {
-			method: 'post',
-			body: TabManager.getTabByID(this.id).content
-		}))).text();
-	}
-
-	insertText(textToInsert) {
-		let val = document.querySelector(`#view_${this.id} textarea`);
-		let cursorPos = val.selectionStart;
-		document.querySelector(`#view_${this.id} textarea`).value = val.value.substring(0, val.selectionStart) + textToInsert + val.value.substring(val.selectionEnd);
-		val.setSelectionRange(cursorPos + (textToInsert.length / 2), cursorPos + (textToInsert.length / 2));
-	}
-
-	static deletePattern(self, targetCharacter, cursorPos) {
-		let j = cursorPos + 1;
-		while (self.value[j] === targetCharacter) ++j;
-		let i = cursorPos;
-		while (self.value[i] === targetCharacter) --i;
-		return {cont: self.value.substring(0, i) + self.value.substring(j), cursorPos: cursorPos};
-	}
-
-	static shouldDeletePattern(self, targetChar, cursorPos) {
-		return (self.value[cursorPos - 1] + self.value[cursorPos]) === new Array(3).join(targetChar);
-	}
-
-	getCursorPosition() {
-		// return this.
-		return this.selectionStart;
+	underline() {
+		document.execCommand('underline', false, null);
+		this.updateUI();
 	}
 
 	async setZoom(lvl) {
@@ -179,5 +125,43 @@ export default class EditorFunction extends Handler {
 	async zoomOut() {
 		// this.zoomLevel = Math.max(this.zoomLevel / 2, 1000);
 		this.setZoom(this.zoomLevel / 2);
+	}
+
+	static getSelectionStart() {
+		const node = document.getSelection().anchorNode.parentElement;
+		return node;
+		// return (node.nodeType == 3 ? node.parentNode : node)
+		// return node.parentNode;
+	}
+
+	async updateUI(el) {
+		el = el || EditorFunction.getSelectionStart();
+		// console.log(el);
+
+		document.querySelector('tool.bold').classList.remove('active');
+		document.querySelector('tool.italic').classList.remove('active');
+		document.querySelector('tool.underline').classList.remove('active');
+		document.querySelector('tool.strikethrough').classList.remove('active');
+
+		if (getComputedStyle(el)["font-weight"] === "900")
+		// console.log('bold');
+			document.querySelector(`.editor#view_${this.id} tool.bold`).classList.add('active');
+
+		if (getComputedStyle(el)["font-style"] === "italic")
+		// console.log('italic');
+			document.querySelector(`.editor#view_${this.id} tool.italic`).classList.add('active');
+
+		if (getComputedStyle(el)["text-decoration"].indexOf("underline") > -1)
+		// console.log('underline');
+			document.querySelector(`.editor#view_${this.id} tool.underline`).classList.add('active');
+
+		if (getComputedStyle(el)["text-decoration"].indexOf("line-through") > -1)
+		// console.log('strkethrough');
+			document.querySelector(`.editor#view_${this.id} tool.strikethrough`).classList.add('active');
+
+		document.querySelector(".font-size").value = getComputedStyle(el)["font-size"].split("pt")[0];
+
+		if (el.parentElement.classList.contains("page")) this.updateUI(el.parentElement);
+
 	}
 }

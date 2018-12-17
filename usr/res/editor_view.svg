@@ -58,13 +58,6 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-292.76664)">
-    <ellipse
-       style="fill:#ffffff;fill-opacity:1;stroke:#ffffff;stroke-width:0.47037038;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path5721"
-       cx="2.1166668"
-       cy="294.8833"
-       rx="1.8814815"
-       ry="1.8814814" />
     <path
        style="fill:#37abc8;stroke:none;stroke-width:0.26458332px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="m 0.7937499,294.35414 0.5291667,2.38125 h 0.5291667 l 0.2645834,-1.32292 0.2645834,1.32292 h 0.5291665 l 0.5291666,-2.38125 H 2.9104166 l -0.2645832,1.32292 -0.2645833,-1.05834 H 1.8520833 l -0.2645834,1.05834 -0.2645833,-1.32292 z"

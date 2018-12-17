@@ -59,8 +59,9 @@
 }
 
 .uibox.menu.option:hover {
-    background: #4c82ca !important;
+    /*background: #4c82ca !important;*/
     /* width: 100%; */
+    background: purple;
     display: block;
     color: #eee;
 }

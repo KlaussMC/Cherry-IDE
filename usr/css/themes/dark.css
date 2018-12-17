@@ -1,8 +1,112 @@
 body {
+    background: #222;
+}
+li {
+    color: #999;
+}
+
+.tab-bar {
+    background: #222;
+    /*border-color: #434c4e;*/
+    border: none;
+}
+
+.view_container {
+    border-color: #434c4e;
+}
+.tab {
+    background: #222;
+    color: purple;
+    border-color: #434c4e;
+}
+
+.tab.active {
+    border-bottom: 2px solid #222 !important;
+}
+
+code {
+    color: #ddd !important;
+}
+.text_view {
+    background: #222;
+    color: #a0a !important;
+}
+.menu_bar {
+    background: #444;
+
+    box-shadow: 0 1px 1px 0 #333 !important;
+}
+.menu_bar .option {
+    color: #a0a !important;
+}
+
+.submenu .option:hover {
+    color: #eee !important;
+}
+
+.submenu {
+    /*box-shadow: 0 1px 1px 0 #333 !important;*/
+    box-shadow: 0 0 5px 0 #333;
+    background: #555;
+}
+
+span.label:hover {
+    background: #444;
+}
+
+div.tool:hover {
     background: #333;
+}
+
+.welcome.view {
+    color: #aaa;
+}
+
+.editor {
+    background: #222 !important;
+}
+
+.editor .editor_page_view {
+    background: #333 !important;
+}
+
+.editor .editor_tool_bar {
+    background: #444 !important;
+}
+.editor tool {
+    background: #333 !important;
+    color: #eee !important;
+}
+.editor tool:hover {
+    background: purple !important;
+}
+
+
+.gui {
+    background: #222 !important;
+}
+
+.gui .gui_page_view {
+    background: #333 !important;
+}
+
+.gui .gui_tool_bar {
+    background: #444 !important;
+}
+.gui tool {
+    background: #333 !important;
+    color: #eee !important;
+}
+.gui tool:hover {
+    background: purple !important;
+}
+
+input {
     color: #eee;
 }
 
-.view:not(.code) * {
-    color: #eee;
+.uibox.box.wrapper {
+    background: #444;
+    box-shadow: 0 0 7px 0 #333;
+    color: #ddd;
 }

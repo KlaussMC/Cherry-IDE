@@ -1,0 +1,110 @@
+.view.gui {
+    overflow: hidden !important;
+    cursor: default;
+    font-family: "Segoe UI", "Roboto", Arial, Helvetica, sans-serif;
+}
+
+.gui_view {
+    border: 1px solid purple;
+    /*min-height: 100%;*/
+    /*padding: 10px;*/
+    position: relative;
+    top: 0;
+    bottom: 0;
+    background: #eee;
+}
+
+.gui_view .gui_tool_bar {
+    width: auto;
+    padding: 10px;
+    background: #fff;
+    box-shadow: 0 1px 1px 0 #888;
+    /* position: fixed; */
+    z-index: 2;
+}
+
+.gui_tool_bar {
+    box-sizing: content-box;
+    /*height: auto;*/
+    height: 37px;
+}
+tool {
+    min-width: 25px;
+    height: 25px;
+    border-radius: 5px;
+    display: block;
+    float: left;
+    text-align: center;
+    line-height: 25px;
+    background: #eee;
+    transition: 0.25s;
+    cursor: pointer;
+    margin: 0 2px;
+}
+tool.bold {
+    font-weight: 900;
+}
+tool.italic {
+    font-style: italic;
+}
+tool.underline {
+    text-decoration: underline;;
+}
+tool.strikethrough {
+    text-decoration: line-through;
+}
+tool.font-size input {
+    margin-top: 0;
+    width: 75px;
+    padding: 2.5px 2.5px 2.5px 5px;
+    top: 0;
+    border: none;
+}
+
+tool.font-size input:hover {
+    color: #eee;
+}
+
+tool:hover {
+    background: purple;
+    color: #eee;
+}
+tool.zoom-slider input.zoom {
+    position:relative;
+    top: -8px;
+    height: 0;
+    box-sizing: border-box;
+    display: block;
+    padding-left: 10px !important;
+    /*-webkit-appearance: none;*/
+    /*margin: auto 2px;*/
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+tool.zoom-slider {
+    padding: 0 5px;
+    transition: 0.1s ease;
+}
+.toolgroup {
+    padding: 5px;
+    border: 1px solid purple;
+    display: block;
+    float: left;
+    position: relative;
+    border-radius: 5px;
+    margin: 0 5px;
+}
+tool.active {
+    background: purple !important;
+    color: #eee;
+}
+
+.viewport {
+    position: fixed;
+    width: 720px;
+    height: 480px;
+}

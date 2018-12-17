@@ -1,13 +1,20 @@
 <div class="gui_view">
-    <div class="toolbox">
-        <ul class="tools">
-            <li class="tool"></li>
-        </ul>
-    </div>
-    <div class="toolbar">
-        <div class="tool">
-            Save
+    <link rel="stylesheet" href="/css/gui.css" />
+    <div class="gui_tool_bar">
+        <div class="toolgroup">
+            <tool class="show-html">Show HTML</tool>
+        </div>
+
+        <div class="toolgroup">
+            <tool class="position">Position Element</tool>
         </div>
     </div>
-    <div class="display"></div>
+
+    <div class="widget_box">
+        <widget>Button</widget>
+    </div>
+
+    <div class="viewport">
+
+    </div>
 </div>

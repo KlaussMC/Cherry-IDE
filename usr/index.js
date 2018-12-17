@@ -65,7 +65,7 @@ addEventListener('load', async e => {
 
 	FileManager.show();
 
-	window.openContext = function(view) {
+	window.openContext = function (view) {
 		switch (view) {
 			case 0:
 				ContextHandler.code(contextFocus);
@@ -78,31 +78,40 @@ addEventListener('load', async e => {
 				break;
 			case 3:
 				ContextHandler.editor(contextFocus);
+				break;
+			case 4:
+				ContextHandler.gui(contextFocus);
+				break;
 		}
 	};
 
-	document.addEventListener('contextmenu', function(e) {
-		focused = e.path[0].querySelector('.file_view');
+	window.addEventListener('contextmenu', function (e) {
+		if (e.path[0].classList.contains('file_view'))
+			focused = e.path[0];
+		else
+			focused = e.path[0].querySelector('.file_view');
+
 		e.preventDefault();
 		if (focused) {
 			contextFocus = require('path').join(focused.getAttribute('value'), focused.innerHTML);
-			if (menu)
+			if (menu) {
 				menu.show(e.clientX, e.clientY);
-			else {
+			} else {
 				menu = new UIbox(new template({
 					content: {
 						"View Code": e => openContext(0),
 						"View Preview": e => openContext(1),
 						"View Text": e => openContext(2),
-						"Edit File": e => openContext(3)
+						"Edit File": e => openContext(3),
+						"GUI View": e => openContext(4)
 					},
 					type: 'menu',
 					settings: {
 						contentIsArray: true
 					}
-				}), "Context Menu", () => {}, () => {}, () => {})
+				}), "Context Menu", () => {}, () => {}, () => {});
 
-				menu.show(e.clientX, e.clientX);
+				menu.show(e.clientX, e.clientY);
 			}
 		}
 	});
@@ -133,6 +142,7 @@ new KeyBinding("f11", () => ipcRenderer.send('fullscreen', fullscreen = !fullscr
 new KeyBinding('ctrl+w', () => {
 	try {
 		TabManager.getActiveTab().close(true)
-	} catch (e) {}
+	} catch (e) {
+	}
 });
 new KeyBinding("alt", () => document.querySelector('.menu_bar').classList.toggle('hidden'));
